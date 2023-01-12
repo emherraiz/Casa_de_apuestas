@@ -1,0 +1,72 @@
+@startuml
+class Cliente {
+    - id: PK
+    - nombre: String
+    - apellido
+    - email 
+    - activado: Boolean
+}
+
+class Empresa {
+    - id
+    - razon_social
+    - email
+    - activado: Boolean
+}
+
+class Equipo {
+    - id
+    - nombre
+    - escudo
+    - pais 
+    - puntaje 
+}
+
+class Apuesta {
+    - id 
+    - monto
+    - fecha
+    - equipo_ganador
+    - equipo_ganador_id
+    - partido_id
+    - cliente_id
+    - ganancia 
+}
+
+class Partido {
+    - id
+    - cuota
+    - fecha 
+    - equipo_local_id
+    - equipo_visitante_id
+    - finalizado 
+    - equipo_ganador_id
+}
+
+class Cuota {
+    - id
+    - partido_id
+    - probabilidad_empate
+    - probabilidad_local
+    - probabilidad_visitante
+}
+
+
+Empresa --* Cliente: crea al
+Equipo --* Partido: equipo local
+Equipo --* Partido: equipo visitante
+
+Cliente --> Apuesta: realiza apuesta
+Partido --> Cuota: tiene una
+
+Cliente --|> Model
+Empresa --|> Model
+Partido --|> Model
+Equipo --|> Model
+Cuota --|> Model
+
+Apuesta --> Partido: se realiza sobre
+
+
+@enduml
+

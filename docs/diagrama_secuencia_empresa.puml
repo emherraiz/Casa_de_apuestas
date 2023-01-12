@@ -1,0 +1,28 @@
+@startuml
+
+actor Admin
+boundary ClienteController
+participant ClienteService
+participant ClienteRepositorio
+participant ClienteSchema
+entity ClienteModel
+database data
+
+Admin -> ClienteController: GET (Request)
+activate ClienteController
+ClienteController -> ClienteModel: get_or_404()
+activate ClienteModel
+ClienteModel -> data: query (SELECT)
+ClienteModel <- data: Register
+ClienteSchema <- ClienteModel: Objeto cliente
+deactivate ClienteModel
+activate ClienteSchema
+ClienteRepositorio <- ClienteSchema: Json cliente
+deactivate ClienteSchema
+activate ClienteRepositorio
+ClienteController <- ClienteRepositorio: ClienteModel
+deactivate ClienteRepositorio
+Admin <- ClienteController: json (Response)
+deactivate ClienteController
+
+@enduml

@@ -1,11 +1,12 @@
-import pickle
-
 import numpy as np
+import tensorflow as tf
 
 from main.map import ApuestaSchema
 from main.repositories.repositorioapuesta import ApuestaRepositorio
 from main.repositories.repositoriocuota import CuotaRepositorio
 from abc import ABC
+
+import os
 
 from main.services.avg_goals import AVG_GOALS
 from main.services.perc_victories import PERC_VICT
@@ -53,8 +54,7 @@ class CuotaStrategy(ABC):
     def calcular_cuota(self, cuota):
         """Calcular probabilidad"""
 
-        with open('main/services/model.pkl', 'rb') as f:
-            model = pickle.load(f)
+        model = tf.keras.models.load_model('main/services/my_model.h5')
 
         equipo_local = TEAMS_MAPS.get(cuota.partido.equipo_local.nombre, cuota.partido.equipo_local.nombre)
         equipo_visitante = TEAMS_MAPS.get(cuota.partido.equipo_visitante.nombre, cuota.partido.equipo_visitante.nombre)
@@ -69,7 +69,7 @@ class CuotaStrategy(ABC):
             MATCHES_PLAYED.get(equipo_visitante, 0),
         ])
 
-        cuota_visitante, cuota_local, cuota_empate = 1 / model.predict_proba(np.array([datos]))[0]
+        cuota_visitante, cuota_local, cuota_empate = 1 / model.predict(datos.reshape(1, 8))[0]
 
         return cuota_visitante, cuota_local, cuota_empate
 

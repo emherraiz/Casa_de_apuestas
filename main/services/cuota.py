@@ -2,14 +2,7 @@ from main.repositories.repositoriocuota import CuotaRepositorio
 from main.services.partidos import PartidoService
 from main.services.equipo import EquipoService
 from math import cos
-import numpy as np
 
-from .teams_map import TEAMS_MAPS
-from .teams_code import TEAMS_CODE
-from .perc_victories import PERC_VICT
-from .avg_goals import AVG_GOALS
-
-import pickle
 
 repositorio = CuotaRepositorio()
 partido_service = PartidoService()
